@@ -5,6 +5,8 @@ from .models import Library
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import UserProfile
 # Function-based view to list all books
 def list_books(request):
     books = Book.objects.all()  # Using Book.objects.all() as requested
@@ -60,3 +62,32 @@ def logout_view(request):
     logout(request)
     messages.info(request, "You have been logged out.")
     return render(request, 'relationship_app/logout.html')
+def check_role(user, required_role):
+    try:
+        return user.userprofile.role == required_role
+    except UserProfile.DoesNotExist:
+        return False
+
+def admin_check(user):
+    return check_role(user, 'ADMIN')
+
+def librarian_check(user):
+    return check_role(user, 'LIBRARIAN')
+
+def member_check(user):
+    return check_role(user, 'MEMBER')
+
+@login_required
+@user_passes_test(admin_check)
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
+
+@login_required
+@user_passes_test(librarian_check)
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
+
+@login_required
+@user_passes_test(member_check)
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, {{ request.user.username }} (Admin)</p>
+    <div class="admin-features">
+        <h2>Administrative Functions</h2>
+        <ul>
+            <li>User Management</li>
+            <li>System Configuration</li>
+            <li>Access Control</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
