@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Detail</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; }
+        h1 { color: #2c3e50; }
+        h2 { color: #3498db; margin-top: 1.5rem; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 0.5rem; margin: 0.5rem 0; background: #f8f9fa; border-radius: 4px; }
+        .book-count { font-size: 0.9em; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+    <h1>Library: {{ library.name }}</h1>
+    <h2>Books in Library: <span class="book-count">({{ library.books.count }} total)</span></h2>
+    <ul>
+        {% for book in library.books.all %}
+        <li>
+            <strong>{{ book.title }}</strong> by {{ book.author.name }}
+            {% if book.publication_year %}
+            (Published {{ book.publication_year }})
+            {% endif %}
+        </li>
+        {% empty %}
+        <li>No books in this library.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
