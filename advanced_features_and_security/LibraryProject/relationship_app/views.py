@@ -7,11 +7,17 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import UserProfile
-# Function-based view to list all books
-def list_books(request):
-    books = Book.objects.all()  # Using Book.objects.all() as requested
-    return render(request, 'relationship_app/list_books.html', {'books': books})
+from .models import Book
 
+@login_required
+@permission_required('bookshelf.view_book', raise_exception=True)
+def book_list(request):
+    """
+    View to list all books. Requires user to be authenticated
+    and have the 'view_book' permission.
+    """
+    books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
 # Class-based view to show library details
 class LibraryDetailView(DetailView):
     model = Library
