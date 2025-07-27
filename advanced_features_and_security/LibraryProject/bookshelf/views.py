@@ -43,3 +43,7 @@ def article_delete(request, pk):
         article.delete()
         return redirect('article_list')
     return render(request, 'articles/delete.html', {'article': article})
+
+def list_books(request):
+    books = Book.objects.all()  # Using Book.objects.all() as requested
+    return render(request, 'relationship_app/list_books.html', {'books': books})
