@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Book
+from .models import Article
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 from .forms import CustomUserCreationForm, CustomUserChangeForm
@@ -36,3 +37,9 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 admin.site.register(CustomUser, CustomUserAdmin)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'created_at')
+    list_filter = ('author', 'created_at')
+    search_fields = ('title', 'content')
+
+admin.site.register(Article, ArticleAdmin)

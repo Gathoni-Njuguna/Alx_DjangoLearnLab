@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import gettext_lazy as _
 
 class CustomUserManager(BaseUserManager):
@@ -54,3 +56,23 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+class Article(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view articles"),
+            ("can_create", "Can create articles"),
+            ("can_edit", "Can edit articles"),
+            ("can_delete", "Can delete articles"),
+        ]
+
+    def __str__(self):
+        return self.title
