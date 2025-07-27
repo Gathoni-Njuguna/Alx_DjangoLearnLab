@@ -47,3 +47,47 @@ def article_delete(request, pk):
 def list_books(request):
     books = Book.objects.all()  # Using Book.objects.all() as requested
     return render(request, 'relationship_app/list_books.html', {'books': books})
+
+from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
+from django.core.exceptions import SuspiciousOperation
+from .models import Book
+from .forms import SearchForm
+
+# Safe search example using Django ORM
+@require_http_methods(["GET"])
+def book_search(request):
+    form = SearchForm(request.GET or None)
+    
+    if form.is_valid():
+        # Safe query using Django ORM (parameterized)
+        books = Book.objects.filter(
+            title__icontains=form.cleaned_data['query']
+        )[:100]  # Limit results
+        
+        # Never do this: Book.objects.raw(f"SELECT * FROM books WHERE title LIKE '%{request.GET['query']}%'")
+    else:
+        books = Book.objects.none()
+        raise SuspiciousOperation("Invalid search input")
+    
+    return render(request, 'books/search.html', {'books': books, 'form': form})
+
+# Safe file upload example
+def upload_book(request):
+    if request.method == 'POST':
+        form = BookUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Validate file type and size
+            uploaded_file = request.FILES['file']
+            if uploaded_file.content_type not in ['application/pdf', 'application/epub+zip']:
+                raise SuspiciousOperation("Invalid file type")
+            if uploaded_file.size > 10*1024*1024:  # 10MB limit
+                raise SuspiciousOperation("File too large")
+            
+            # Process the file
+            book = form.save()
+            return redirect('book_detail', pk=book.pk)
+    else:
+        form = BookUploadForm()
+    
+    return render(request, 'books/upload.html', {'form': form})

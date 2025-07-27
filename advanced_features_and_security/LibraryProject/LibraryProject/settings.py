@@ -18,7 +18,19 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'users.CustomUser'
 # Application definition
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
+SECURE_SSL_REDIRECT = True  # Redirect all non-HTTPS requests to HTTPS
+SESSION_COOKIE_SECURE = True  # Only send session cookie over HTTPS
+CSRF_COOKIE_SECURE = True  # Only send CSRF cookie over HTTPS
+SECURE_HSTS_SECONDS = 31536000  # 1 year HSTS policy
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_REFERRER_POLICY = 'same-origin'
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -76,12 +88,38 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
+# Security settings for production
+DEBUG = False  # Always False in production
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']  # Set your actual domains
+
+# Security middleware and settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# HTTPS settings
+SECURE_SSL_REDIRECT = True  # Redirect all non-HTTPS requests to HTTPS
+SESSION_COOKIE_SECURE = True  # Only send session cookie over HTTPS
+CSRF_COOKIE_SECURE = True  # Only send CSRF cookie over HTTPS
+SECURE_HSTS_SECONDS = 31536000  # 1 year HSTS policy
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Additional security settings
+SECURE_REFERRER_POLICY = 'same-origin'
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 12,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -91,7 +129,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Content Security Policy
+MIDDLEWARE = [
+    # ...
+    'csp.middleware.CSPMiddleware',
+    # ...
+]
 
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com')
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com')
+CSP_IMG_SRC = ("'self'", 'data:')
+CSP_FONT_SRC = ("'self'", 'cdnjs.cloudflare.com')
+CSP_CONNECT_SRC = ("'self'",)
+CSP_OBJECT_SRC = ("'none'",)
+CSP_BASE_URI = ("'self'",)
+CSP_FRAME_ANCESTORS = ("'none'",)
+CSP_FORM_ACTION = ("'self'",)
+CSP_INCLUDE_NONCE_IN = ['script-src']
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
