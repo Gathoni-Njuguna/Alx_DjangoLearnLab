@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf',
     'relationship_app',
-    'users',
+    'users', 
+     'bookshelf.CustomerUser', # Custom user app
 ]
 
 MIDDLEWARE = [
