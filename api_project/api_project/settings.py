@@ -128,6 +128,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication', 
         'rest_framework.authentication.TokenAuthentication',  # Token-based
-        'rest_framework.authentication.SessionAuthentication',  # Optional
+        'rest_framework.permissions.IsAuthenticated',  # Optional
     ],
 }
