@@ -1,0 +1,11 @@
+{% extends 'invapp/layout.html' %}
+{% block title %}Delete Product{% endblock %}
+{% block content %}
+    <h1>Are you sure yo want to delete</h1>
+    <form method="POST" class="text-center">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-danger">Yes</button>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">No</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'invapp/layout.html' %}
+
+{% block title %}Home {% endblock %}
+{% block content %}
+    <div class="jumbotron text-center">
+    <h1>Welcome to the Inventory App</h1>
+    <p class="lead">This is the home page. Use the navigation links to manage products.</p>
+<hr class="my-4">
+    <p>Use the buttons below to create or view products.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'product_create' %}" role="button">Create Product</a>
+    <a class="btn btn-secondary btn-lg" href="{% url 'product_list' %}" role="button">Show Products</a>
+</div>
+    {% endblock %}
