@@ -5,7 +5,7 @@ from .serializers import BookSerializer
 from rest_framework import permissions
 from django.http import HttpResponse
 from .permissions import IsCreatorOrReadOnly
-import django_filters.rest_framework
+from django_filters import rest_framework
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 
