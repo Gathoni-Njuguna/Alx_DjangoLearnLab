@@ -3,7 +3,6 @@ from .models import Author, Book
 from datetime import datetime
 class BookSerializer(serializers.ModelSerializer):
 
-
     class Meta:
         model = Book
         fields = ['id', 'title', 'author', 'publication_year']
