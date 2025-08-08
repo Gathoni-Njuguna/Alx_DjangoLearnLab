@@ -5,12 +5,14 @@ from .serializers import BookSerializer
 from rest_framework import permissions
 from django.http import HttpResponse
 from .permissions import IsCreatorOrReadOnly
+import django_filters.rest_framework
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 
 # Create your views here.
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     serializer_class = BookSerializer
     permission_classes =[permissions.AllowAny]
 class BookDetailView(generics.RetrieveAPIView):
