@@ -20,10 +20,7 @@ class BookListView(generics.ListAPIView):
     
     # Specify ordering fields
     ordering_fields = [
-        'title', 
-        'id',
-        'created_at', 
-        'updated_at',
+   "author", "publication_year"
         # Add more fields as needed
     ]
     
