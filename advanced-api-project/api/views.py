@@ -13,7 +13,7 @@ class BookListView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
     
     # Add both filtering and ordering backends
-    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+    filter_backends = [filters.OrderingFilter]
     
     # Specify ordering fields
     ordering_fields = [
