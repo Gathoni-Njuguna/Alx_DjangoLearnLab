@@ -1,0 +1,96 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Register - Django Blog{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="auth-card card shadow-sm">
+            <div class="card-header">
+                <h3 class="mb-0">Create Your Account</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> Please correct the issues below.
+                            <ul class="my-1">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="id_username" class="form-label">Username</label>
+                            <input type="text" name="username" maxlength="150" autofocus 
+                                   class="form-control" required id="id_username"
+                                   placeholder="Choose a username">
+                            <div class="form-text">
+                                150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="id_email" class="form-label">Email Address</label>
+                            <input type="email" name="email" class="form-control" 
+                                   required id="id_email" placeholder="your@email.com">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="id_password1" class="form-label">Password</label>
+                            <input type="password" name="password1" autocomplete="new-password" 
+                                   class="form-control" required id="id_password1"
+                                   placeholder="Create a password">
+                            <div class="form-text">
+                                <ul class="small">
+                                    <li>Your password can't be too similar to your other personal information</li>
+                                    <li>Must contain at least 8 characters</li>
+                                    <li>Can't be a commonly used password</li>
+                                    <li>Can't be entirely numeric</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="id_password2" class="form-label">Confirm Password</label>
+                            <input type="password" name="password2" autocomplete="new-password" 
+                                   class="form-control" required id="id_password2"
+                                   placeholder="Confirm your password">
+                            <div class="form-text">
+                                Enter the same password as before, for verification.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                        <label class="form-check-label small" for="termsCheck">
+                            I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> 
+                            and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-success btn-lg">Create Account</button>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="mb-0">Already have an account? 
+                            <a href="{% url 'login' %}" class="text-decoration-none">Login here</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
